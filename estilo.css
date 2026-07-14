@@ -1,0 +1,13 @@
+.min-vh-custom {
+    min-height: 80vh;
+}
+
+.btn-mi-color {
+    background-color: #E91E63;
+    color: #ffffff;
+}
+
+.btn-mi-color:hover {
+    background-color: #C2185B;
+    color: #ffffff;
+}

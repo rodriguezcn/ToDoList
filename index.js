@@ -65,8 +65,23 @@ aplicacion.post("/api/registro", (peticion, respuesta) => {
 });
 
 // 3. Obtener todas las tareas
+
 aplicacion.get("/api/tareas", (peticion, respuesta) => {
-    baseDeDatos.all(`SELECT t.*, u.usuario as nombre_creador FROM tareas t LEFT JOIN usuarios u ON t.id_usuario = u.id_usuario`, [], (error, filas) => {
+    // Obtenemos el id_usuario desde la URL (ej: /api/tareas?id_usuario=1)
+    const { id_usuario } = peticion.query;
+
+    if (!id_usuario) {
+        return respuesta.status(400).json({ error: "Falta el id_usuario en la petición" });
+    }
+
+    const sql = `
+        SELECT t.*, u.usuario as nombre_creador 
+        FROM tareas t 
+        LEFT JOIN usuarios u ON t.id_usuario = u.id_usuario
+        WHERE t.id_usuario = ?
+    `;
+
+    baseDeDatos.all(sql, [id_usuario], (error, filas) => {
         if (error) return respuesta.status(500).json({ error: error.message });
         respuesta.json(filas);
     });

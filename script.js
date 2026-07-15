@@ -99,7 +99,8 @@ botonCerrarSesion.addEventListener('click', () => {
 
 // --- CARGA Y RENDERIZADO DESDE BASE DE DATOS ---
 async function cargarTareasDesdeBaseDeDatos() {
-    const respuesta = await fetch('/api/tareas');
+    if (!usuarioActual || !usuarioActual.id_usuario) return;
+    const respuesta = await fetch(`/api/tareas?id_usuario=${usuarioActual.id_usuario}`);
     arregloTareas = await respuesta.json();
     mostrarTareasEnPantalla();
 }
